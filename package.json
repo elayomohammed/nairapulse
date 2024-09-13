@@ -4,6 +4,26 @@
     "dotenv": "^16.4.5",
     "moment-timezone": "^0.5.45",
     "node-schedule": "^2.1.1",
+    "pm2": "^5.4.2",
     "twitter-api-v2": "^1.17.2"
-  }
+  },
+  "name": "nairapulse",
+  "description": "daily unofficial NGN exchange rates",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "pm2 start bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elayomohammed/nairapulse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elayomohammed/nairapulse/issues"
+  },
+  "homepage": "https://github.com/elayomohammed/nairapulse#readme"
 }

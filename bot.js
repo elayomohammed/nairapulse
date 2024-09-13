@@ -132,8 +132,8 @@ async function postMarketData() {
     
     // Tweet feed to Twitter
     try {
-      await BotClient.v2.tweet(feedShort2);
-      console.log('Tweet sent successfully:\n', feedShort2,);
+      await BotClient.v2.tweet(feedShort1);
+      console.log('Tweet sent successfully:\n', feedShort1,);
     } catch (error) {
       console.error('Error sending tweet:', error);
     }
@@ -152,20 +152,22 @@ async function postMarketData() {
 }
 
 
-// Schedule the tweet every 24 hours
+// Schedule the publish every 24 hours
 //schedule.scheduleJob('0 0 * * *', postMarketData);
-// Schedule the tweet every 12 hours
+// Schedule the publish every 12 hours
 //schedule.scheduleJob('0 0 */12 * *', postMarketData);
-// Schedule the tweet every 60 minutes
+// Schedule the publish every 60 minutes
 //schedule.scheduleJob('0 * * * *', postMarketData);
-// Schedule the tweet every 30 minutes
+// Schedule the publish every 30 minutes
 //schedule.scheduleJob('*/30 * * * *', postMarketData);
-// Schedule the tweet every 10 minutes
+// Schedule the publish every 10 minutes
 //schedule.scheduleJob('*/10 * * * *', postMarketData);
-// Schedule the tweet every 5 minutes
-schedule.scheduleJob('*/5 * * * *', postMarketData);
-// Schedule the tweet every 1 minute
+// Schedule the publish every 5 minutes
+//schedule.scheduleJob('*/5 * * * *', postMarketData);
+// Schedule the publish every 1 minute
 //schedule.scheduleJob('* * * * *', postMarketData);
+// Schedule the publish 6:00AM every day
+schedule.scheduleJob('0 6 * * *', postMarketData);
 
 // Initial tweet
 postMarketData();
