@@ -165,9 +165,9 @@ async function postMarketData() {
 // Schedule the publish every 5 minutes
 //schedule.scheduleJob('*/5 * * * *', postMarketData);
 // Schedule the publish every 1 minute
-//schedule.scheduleJob('* * * * *', postMarketData);
+schedule.scheduleJob('* * * * *', postMarketData);
 // Schedule the publish 6:00AM every day
-schedule.scheduleJob('0 6 * * *', postMarketData);
+//schedule.scheduleJob('0 6 * * *', postMarketData);
 
 // Initial tweet
 postMarketData();
