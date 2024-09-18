@@ -1,89 +1,37 @@
-require('dotenv').config();
-const {TwitterApi} = require('twitter-api-v2');
-const axios = require('axios');
-const schedule = require('node-schedule');
-const moment = require('moment-timezone');  // Use moment to handle timezones
-
-// Twitter API credentials from environment variables
-const BotClient = new TwitterApi({
-  appKey: process.env.NAIRAPULSE_API_KEY,
-  appSecret: process.env.NAIRAPULSE_API_KEY_SECRET,
-  accessToken: process.env.NAIRAPULSE_API_ACCESS_TOKEN,
-  accessSecret: process.env.NAIRAPULSE_API_ACCESS_TOKEN_SECRET,
-});
-
-// Fetch BTC to USD price from Cryptocompare or CoinGecko
-/*async function getBtcToUsd() {
-  try {
-    const response = await axios.get(`https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,JPY,EUR,NGN&api_key=${process.env.CRYPTOCOMPARE_API_KEY}`);
-    // const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd', {headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-FySH2NtG7shrPGHqZX9NwDCC'}});
-    return response.data.USD;
-  } catch (error) {
-    console.error('Error fetching BTC to USD:\n', error.message);
-    return null;
-  }
-}
-
-// Fetch NGN to USD price from ExchangeRate API
-async function getNgnToUsd() {
-  console.log('Fetching NGN to USD price from exchange rate');
-  try {
-    const response = await axios.get(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGERATE_API_KEY}/latest/USD`);
-    return response.data.conversion_rates.NGN;
-  } catch (error) {
-    console.error(`Error fetching NGN to USD:\n${error.message}`);
-    return null;
-  }
-}
-
-// Function to create and send a tweet
-async function tweetExchangeRates() {
-  const btcToUsd = await getBtcToUsd();
-  const ngnToUsd = await getNgnToUsd();
-
-  if (btcToUsd !== null && ngnToUsd !== null) {
-    console.log('\nsending tweet...\n');
-    const tweet = `BTC to USD: $${btcToUsd}\nNGN to USD: ₦${ngnToUsd}\n#Crypto #Forex`;
-
-    try {
-      const response = await BotClient.v2.tweet(tweet);
-      console.log(response);
-      console.log('Tweet sent successfully:', `\n${tweet}`);
-    } catch (error) {
-      console.error('Error sending tweet:', `\n${error}`);
-    }
-  }
-}*/
-
-
-// CryptoCompare API URL
-const CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com/data/pricemultifull';
-
-// Fetch market data from CryptoCompare
-async function fetchMarketData() {
-  try {
-    const symbols = 'BTC,USD,EUR,GBP,NGN';
-    const currencies = 'USD,NGN,EUR,GBP';
-    const url = `${CRYPTOCOMPARE_API_URL}?fsyms=${symbols}&tsyms=${currencies}`;
-
-    const response = await axios.get(url, {
-      headers: {
-        authorization: `Apikey ${process.env.CRYPTOCOMPARE_API_KEY}`
-      }
-    });
-
-    return response.data.DISPLAY;
-  } catch (error) {
-    console.error('Error fetching market data:', error);
-    return null;
-  }
-}
+import {TwitterApi} from 'twitter-api-v2';
+import axios from 'axios';
+import schedule from'node-schedule';
+import moment from 'moment-timezone';  // Use moment to handle timezones
 
 // Format and post the market data to Tweitter, Facebook and Instagram
-async function postMarketData() {
-  const data = await fetchMarketData();
+export async function postMarketData() {
 
+  // Fetch market data from CryptoCompare
+  async function fetchMarketData() {
+    console.log('Fetching market data...\n');
+    const CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com/data/pricemultifull'; // CryptoCompare API URL
+
+    try {
+      const symbols = 'BTC,USD,EUR,GBP,NGN';
+      const currencies = 'USD,NGN,EUR,GBP';
+      const url = `${CRYPTOCOMPARE_API_URL}?fsyms=${symbols}&tsyms=${currencies}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          authorization: `Apikey ${process.env.CRYPTOCOMPARE_API_KEY}`
+        }
+      });
+
+      return response.data.DISPLAY;
+    } catch (error) {
+      console.error('Error fetching market data:', error);
+      return null;
+    }
+  }
+
+  const data = await fetchMarketData();
   if (data) {
+    console.log('Market data fetched successfully!');
     // Extracting required data for each pair
     const btcUsd = data.BTC.USD;
     const btcEur = data.BTC.EUR;
@@ -130,44 +78,33 @@ async function postMarketData() {
     '\n#Forex #Crypto #NGN #BTC'
     ;
     
+    // Twitter API credentials from environment variables
+    const BotClient = new TwitterApi({
+      appKey: process.env.NAIRAPULSE_API_KEY,
+      appSecret: process.env.NAIRAPULSE_API_KEY_SECRET,
+      accessToken: process.env.NAIRAPULSE_API_ACCESS_TOKEN,
+      accessSecret: process.env.NAIRAPULSE_API_ACCESS_TOKEN_SECRET,
+    });
+
     // Tweet feed to Twitter
     try {
+      console.log('\nPublishing to Twitter...\n');
       await BotClient.v2.tweet(feedShort1);
-      console.log('Tweet sent successfully:\n', feedShort1,);
+      console.log('Tweet sent successfully!\n', feedLong);
     } catch (error) {
       console.error('Error sending tweet:', error);
     }
 
     // Post feed to Facebook
     try {
+      console.log('\nPublishing to Facebook...\n');
       await axios.post(`https://graph.facebook.com/${process.env.NAIRAPULSE_FACEBOOK_PAGE_ID}/feed`, {
         message: feedLong,
         access_token: process.env.NAIRAPULSE_FACEBOOK_API_ACCESS_TOKEN,
       });
-      console.log('Posted to Facebook successfully');
+      console.log('Published to Facebook successfully!');
     } catch (error) {
-      console.error('Error posting to Facebook:', error);
+      console.error('Error Publishing to Facebook:', error);
     }
   }
 }
-
-
-// Schedule the publish every 24 hours
-//schedule.scheduleJob('0 0 * * *', postMarketData);
-// Schedule the publish every 12 hours
-//schedule.scheduleJob('0 0 */12 * *', postMarketData);
-// Schedule the publish every 60 minutes
-//schedule.scheduleJob('0 * * * *', postMarketData);
-// Schedule the publish every 30 minutes
-//schedule.scheduleJob('*/30 * * * *', postMarketData);
-// Schedule the publish every 10 minutes
-//schedule.scheduleJob('*/10 * * * *', postMarketData);
-// Schedule the publish every 5 minutes
-//schedule.scheduleJob('*/5 * * * *', postMarketData);
-// Schedule the publish every 1 minute
-schedule.scheduleJob('* * * * *', postMarketData);
-// Schedule the publish 6:00AM every day
-//schedule.scheduleJob('0 6 * * *', postMarketData);
-
-// Initial tweet
-postMarketData();
