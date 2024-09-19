@@ -26,7 +26,7 @@ const app = express();
 
 // Initial publishing after server startup
 //await postMarketData();
-scheduleJob('*/10 * * * *', async () => { // Schedule the publish every five minutes
+scheduleJob('0 6 * * *', async () => { // Schedule the publish every 6:00 AM
     console.log('Running scheduled job: Fetching and posting market data');
     try {
         await postMarketData();
