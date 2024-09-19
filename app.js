@@ -37,10 +37,12 @@ scheduleJob('0 6 * * *', async () => { // Schedule the publish every five minute
 });
 
 app.get('/', (req, res) => {
-    res.send('Bot is running!');
+    const pingResponse = `<p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Bot is running</p>`
+    res.setHeader('Content-Type', 'text/html');
+    res.send(pingResponse);
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
