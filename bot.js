@@ -8,7 +8,7 @@ export async function postMarketData() {
 
   // Fetch market data from CryptoCompare
   async function fetchMarketData() {
-    console.log('Fetching market data...\n');
+    console.log('Fetching data...\n');
     const CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com/data/pricemultifull'; // CryptoCompare API URL
 
     try {
@@ -24,14 +24,14 @@ export async function postMarketData() {
 
       return response.data.DISPLAY;
     } catch (error) {
-      console.error('Error fetching market data:', error);
+      console.error('Error fetching data:', error);
       return null;
     }
   }
 
   const data = await fetchMarketData();
   if (data) {
-    console.log('Market data fetched successfully!');
+    console.log('Data fetched successfully!');
     // Extracting required data for each pair
     const btcUsd = data.BTC.USD;
     const btcEur = data.BTC.EUR;
@@ -88,9 +88,9 @@ export async function postMarketData() {
 
     // Tweet feed to Twitter
     try {
-      console.log('\nPublishing to Twitter...\n');
+      console.log('\nPublishing tweet...\n');
       await BotClient.v2.tweet(feedShort1);
-      console.log('Tweet sent successfully!\n', feedLong);
+      console.log('Tweet sent successfully!\n');
     } catch (error) {
       console.error('Error sending tweet:', error);
     }
