@@ -96,16 +96,16 @@ export async function postMarketData() {
     }
 
     // Post feed to Facebook
-    // try {
-    //   console.log('\nPublishing to Facebook...\n');
-    //   await axios.post(`https://graph.facebook.com/${process.env.NAIRAPULSE_FACEBOOK_PAGE_ID}/feed`, {
-    //     message: feedLong,
-    //     access_token: process.env.NAIRAPULSE_FACEBOOK_API_ACCESS_TOKEN,
-    //   });
-    //   console.log('Published to Facebook successfully!');
-    // } catch (error) {
-    //   console.error('Error Publishing to Facebook:', error);
-    // }
+    try {
+      console.log('\nPublishing to Facebook...\n');
+      await axios.post(`https://graph.facebook.com/${process.env.NAIRAPULSE_FACEBOOK_PAGE_ID}/feed`, {
+        message: feedLong,
+        access_token: process.env.NAIRAPULSE_FACEBOOK_API_ACCESS_TOKEN,
+      });
+      console.log('Published to Facebook successfully!');
+    } catch (error) {
+      console.error('Error Publishing to Facebook:', error);
+    }
 
     // Post to Instagram
     // try {
