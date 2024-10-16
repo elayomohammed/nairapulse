@@ -25,15 +25,15 @@ const app = express();
 //schedule.scheduleJob('0 6 * * *', postMarketData);
 
 // Initial publishing after server startup
-// await postMarketData();
-scheduleJob('0 6 * * *', async () => { // Schedule the publish every 6:00 AM
-    console.log('Running scheduled job: Fetching and posting market data');
-    try {
-        await postMarketData();
-    } catch (error) {
-        console.error('Error posting data:', error);
-    }
-});
+await postMarketData();
+// scheduleJob('0 6 * * *', async () => { // Schedule the publish every 6:00 AM
+//     console.log('Running scheduled job: Fetching and posting market data');
+//     try {
+//         await postMarketData();
+//     } catch (error) {
+//         console.error('Error posting data:', error);
+//     }
+// });
 
 app.get('/', (req, res) => {
     const pingResponse = `<p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Bot is running</p>`

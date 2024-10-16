@@ -46,8 +46,8 @@ export async function postMarketData() {
     const currentTime = moment().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss');
 
     // Create feed content short 1
-    const feedShort1 = `
-    ${currentTime} UTC+1:\n
+    const feedShort1 =
+    `${currentTime} UTC+1:\n
     Forex:
     USD ${usdNgn.PRICE.toString().replace('NGN ', '₦')}
     EUR ${eurNgn.PRICE.toString().replace('NGN ', '₦')}
@@ -59,24 +59,36 @@ export async function postMarketData() {
     EUR ${btcEur.PRICE.toString().replace('€ ', '€')}
     GBP ${btcGbp.PRICE.toString().replace('£ ', '£')}
 
-    #Forex #Crypto #NGN #BTC #EUR #USD #GBP
-    `;
+    #Forex #Crypto #NGN #BTC #EUR #USD #GBP`;
 
     // Create feed content long
-    const feedLong = `
-    ${currentTime}\n` +
-    `Forex\nUSD: ${usdNgn.PRICE.toString().replace('NGN ', '₦')} | 24h High: ${usdNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | 24h Low: ${usdNgn.LOW24HOUR.toString().replace('NGN ', '₦')}\n` +
-    `EURO: ${eurNgn.PRICE.toString().replace('NGN ', '₦')} | 24h High: ${eurNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | 24h Low: ${eurNgn.LOW24HOUR.toString().replace('NGN ', '₦')}\n` +
-    `GBP: ${gbpNgn.PRICE.toString().replace('NGN ', '₦')} | 24h High: ${gbpNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | 24h Low: ${gbpNgn.LOW24HOUR.toString().replace('NGN ', '₦')}\n` +
+    const feedLong = `${currentTime} UTC+1\n
+Forex:
+USD: ${usdNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${usdNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${usdNgn.LOW24HOUR.toString().replace('NGN ', '₦')}
+EURO: ${eurNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${eurNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${eurNgn.LOW24HOUR.toString().replace('NGN ', '₦')}
+GBP: ${gbpNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${gbpNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${gbpNgn.LOW24HOUR.toString().replace('NGN ', '₦')}
 
-    `\nBitcoin\n` +
-    `NGN: ${btcNgn.PRICE.toString().replace('NGN ', '₦')} | 24h High: ${btcNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | 24h Low: ${btcNgn.LOW24HOUR.toString().replace('NGN ', '₦')}\n` +
-    `USD: ${btcUsd.PRICE.toString().replace('$ ', '$')} | 24h High: ${btcUsd.HIGH24HOUR.toString().replace('$ ', '$')} | 24h Low: ${btcUsd.LOW24HOUR.toString().replace('$ ', '$')}\n` +
-    `EURO: ${btcEur.PRICE.toString().replace('€ ', '€')} | 24h High: ${btcEur.HIGH24HOUR.toString().replace('€ ', '€')} | 24h Low: ${btcEur.LOW24HOUR.toString().replace('€ ', '€')}\n` +
-    `GBP: ${btcGbp.PRICE.toString().replace('£ ', '£')} | 24h High: ${btcGbp.HIGH24HOUR.toString().replace('£ ', '£')} | 24h Low: ${btcGbp.LOW24HOUR.toString().replace('£ ', '£')}\n` +
+Bitcoin:
+NGN: ${btcNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${btcNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${btcNgn.LOW24HOUR.toString().replace('NGN ', '₦')} | V: ${btcNgn.VOLUME24HOUR})
+USD: ${btcUsd.PRICE.toString().replace('$ ', '$')} | H: ${btcUsd.HIGH24HOUR.toString().replace('$ ', '$')} | L: ${btcUsd.LOW24HOUR.toString().replace('$ ', '$')} | V: ${btcUsd.VOLUME24HOUR})
+EURO: ${btcEur.PRICE.toString().replace('€ ', '€')} | H: ${btcEur.HIGH24HOUR.toString().replace('€ ', '€')} | L: ${btcEur.LOW24HOUR.toString().replace('€ ', '€')} | V: ${btcEur.VOLUME24HOUR})
+GBP: ${btcGbp.PRICE.toString().replace('£ ', '£')} | H: ${btcGbp.HIGH24HOUR.toString().replace('£ ', '£')} | L: ${btcGbp.LOW24HOUR.toString().replace('£ ', '£')} | V: ${btcGbp.VOLUME24HOUR})
 
-    '\n#Forex #Crypto #NGN #BTC'
-    ;
+#Forex #Crypto #NGN #BTC`;
+
+const feedLong1 = `${currentTime} UTC+1\n
+Forex:
+USD ⇛ ${usdNgn.PRICE.toString().replace('NGN ', '₦')}
+EURO ⇛ ${eurNgn.PRICE.toString().replace('NGN ', '₦')}
+GBP ⇛ ${gbpNgn.PRICE.toString().replace('NGN ', '₦')}
+
+Bitcoin:
+NGN ⇛ ${btcNgn.PRICE.toString().replace('NGN ', '₦')}  (V24: ${btcNgn.VOLUME24HOUR})
+USD ⇛ ${btcUsd.PRICE.toString().replace('$ ', '$')}  (V24: ${btcUsd.VOLUME24HOUR})
+EURO ⇛ ${btcEur.PRICE.toString().replace('€ ', '€')}  (V24: ${btcEur.VOLUME24HOUR})
+GBP ⇛ ${btcGbp.PRICE.toString().replace('£ ', '£')}  (V24: ${btcGbp.VOLUME24HOUR})
+
+#Forex #Crypto #NGN #BTC`;
     
     // Twitter API credentials from environment variables
     const BotClient = new TwitterApi({
@@ -89,7 +101,7 @@ export async function postMarketData() {
     // Tweet feed to Twitter
     try {
       console.log('\nPublishing tweet...\n');
-      await BotClient.v2.tweet(feedShort1);
+      await BotClient.v2.tweet(feedLong1);
       console.log('Tweet sent successfully!\n');
     } catch (error) {
       console.error('Error sending tweet:', error);
@@ -99,13 +111,14 @@ export async function postMarketData() {
     try {
       console.log('\nPublishing to Facebook...\n');
       await axios.post(`https://graph.facebook.com/${process.env.NAIRAPULSE_FACEBOOK_PAGE_ID}/feed`, {
-        message: feedLong,
+        message: feedLong1,
         access_token: process.env.NAIRAPULSE_FACEBOOK_API_ACCESS_TOKEN,
       });
       console.log('Published to Facebook successfully!');
     } catch (error) {
       console.error('Error Publishing to Facebook:', error);
     }
+    console.log(feedLong1);
 
     // Post to Instagram
     // try {
