@@ -118,7 +118,6 @@ GBP ⇛ ${btcGbp.PRICE.toString().replace('£ ', '£')}  (V24: ${btcGbp.VOLUME24
     } catch (error) {
       console.error('Error Publishing to Facebook:', error);
     }
-    console.log(feedLong1);
 
     // Post to Instagram
     // try {
