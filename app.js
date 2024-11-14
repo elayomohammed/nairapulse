@@ -34,9 +34,25 @@ scheduleJob('0 6 * * *', async () => { // Schedule the publish every 6:00 AM
         console.error('Error posting data:', error);
     }
 });
+scheduleJob('0 14 * * *', async () => { // Schedule the publish every 2:00 PM
+    console.log('Running scheduled job: Fetching and posting market data');
+    try {
+        await postMarketData();
+    } catch (error) {
+        console.error('Error posting data:', error);
+    }
+});
+scheduleJob('0 20 * * *', async () => { // Schedule the publish every 8:00 PM
+    console.log('Running scheduled job: Fetching and posting market data');
+    try {
+        await postMarketData();
+    } catch (error) {
+        console.error('Error posting data:', error);
+    }
+});
 
 app.get('/', (req, res) => {
-    const pingResponse = `<p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Bot is running</p>`
+    const pingResponse = `<p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Bot is running fine</p>`
     res.setHeader('Content-Type', 'text/html');
     res.send(pingResponse);
 });

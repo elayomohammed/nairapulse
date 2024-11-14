@@ -12,7 +12,7 @@ export async function postMarketData() {
     const CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com/data/pricemultifull'; // CryptoCompare API URL
 
     try {
-      const symbols = 'BTC,USD,EUR,GBP,NGN';
+      const symbols = 'BTC,USD,EUR,GBP,NGN,CNY';
       const currencies = 'USD,NGN,EUR,GBP';
       const url = `${CRYPTOCOMPARE_API_URL}?fsyms=${symbols}&tsyms=${currencies}`;
 
@@ -41,6 +41,7 @@ export async function postMarketData() {
     const eurNgn = data.EUR.NGN;
     const gbpNgn = data.GBP.NGN;
     const usdNgn = data.USD.NGN;
+    const cnyNgn = data.CNY.NGN;
 
     // Get current time in UTC+1 (WAT)
     const currentTime = moment().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss');
@@ -67,6 +68,7 @@ Forex:
 USD: ${usdNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${usdNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${usdNgn.LOW24HOUR.toString().replace('NGN ', '₦')}
 EURO: ${eurNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${eurNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${eurNgn.LOW24HOUR.toString().replace('NGN ', '₦')}
 GBP: ${gbpNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${gbpNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${gbpNgn.LOW24HOUR.toString().replace('NGN ', '₦')}
+CNY: ${cnyNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${cnyNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${cnyNgn.LOW24HOUR.toString().replace('NGN ', '₦')}
 
 Bitcoin:
 NGN: ${btcNgn.PRICE.toString().replace('NGN ', '₦')} | H: ${btcNgn.HIGH24HOUR.toString().replace('NGN ', '₦')} | L: ${btcNgn.LOW24HOUR.toString().replace('NGN ', '₦')} | V: ${btcNgn.VOLUME24HOUR})
@@ -81,6 +83,7 @@ Forex:
 USD ⇛ ${usdNgn.PRICE.toString().replace('NGN ', '₦')}
 EURO ⇛ ${eurNgn.PRICE.toString().replace('NGN ', '₦')}
 GBP ⇛ ${gbpNgn.PRICE.toString().replace('NGN ', '₦')}
+CNY ⇛ ${cnyNgn.PRICE.toString().replace('NGN ', '₦')}
 
 Bitcoin:
 NGN ⇛ ${btcNgn.PRICE.toString().replace('NGN ', '₦')}  (V24: ${btcNgn.VOLUME24HOUR})
@@ -88,8 +91,10 @@ USD ⇛ ${btcUsd.PRICE.toString().replace('$ ', '$')}  (V24: ${btcUsd.VOLUME24HO
 EURO ⇛ ${btcEur.PRICE.toString().replace('€ ', '€')}  (V24: ${btcEur.VOLUME24HOUR})
 GBP ⇛ ${btcGbp.PRICE.toString().replace('£ ', '£')}  (V24: ${btcGbp.VOLUME24HOUR})
 
-#Forex #Crypto #NGN #BTC`;
-    
+For more details visit www.naira-pulse.com
+© Powered by Modalcraft Ltd
+#Forex #Crypto #NGN #BTC
+`;  
     // Twitter API credentials from environment variables
     const BotClient = new TwitterApi({
       appKey: process.env.NAIRAPULSE_API_KEY,
