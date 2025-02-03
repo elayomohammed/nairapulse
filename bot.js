@@ -1,6 +1,6 @@
-import {TwitterApi} from 'twitter-api-v2';
+import { TwitterApi } from 'twitter-api-v2';
 import axios from 'axios';
-import schedule from'node-schedule';
+import schedule from 'node-schedule';
 import moment from 'moment-timezone';  // Use moment to handle timezones
 
 // Format and post the market data to Tweitter, Facebook and Instagram
@@ -47,8 +47,8 @@ export async function postMarketData() {
     const currentTime = moment().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss');
 
     // Create feed content short 1
-    const feedShort1 =
-    `${currentTime} UTC+1:\n
+    const feedShort =
+      `${currentTime} UTC+1:\n
     Forex:
     USD ${usdNgn.PRICE.toString().replace('NGN ', '₦')}
     EUR ${eurNgn.PRICE.toString().replace('NGN ', '₦')}
@@ -60,6 +60,8 @@ export async function postMarketData() {
     EUR ${btcEur.PRICE.toString().replace('€ ', '€')}
     GBP ${btcGbp.PRICE.toString().replace('£ ', '£')}
 
+    www.naira-pulse.com
+    © Powered by Modalcraft Ltd
     #Forex #Crypto #NGN #BTC #EUR #USD #GBP`;
 
     // Create feed content long
@@ -78,7 +80,7 @@ GBP: ${btcGbp.PRICE.toString().replace('£ ', '£')} | H: ${btcGbp.HIGH24HOUR.to
 
 #Forex #Crypto #NGN #BTC`;
 
-const feedLong1 = `${currentTime} UTC+1\n
+    const feedLong1 = `${currentTime} UTC+1\n
 Forex:
 USD ⇛ ${usdNgn.PRICE.toString().replace('NGN ', '₦')}
 EURO ⇛ ${eurNgn.PRICE.toString().replace('NGN ', '₦')}
@@ -94,7 +96,7 @@ GBP ⇛ ${btcGbp.PRICE.toString().replace('£ ', '£')}  (V24: ${btcGbp.VOLUME24
 For more details visit www.naira-pulse.com
 © Powered by Modalcraft Ltd
 #Forex #Crypto #NGN #BTC
-`;  
+`;
     // Twitter API credentials from environment variables
     const BotClient = new TwitterApi({
       appKey: process.env.NAIRAPULSE_API_KEY,
@@ -106,7 +108,7 @@ For more details visit www.naira-pulse.com
     // Tweet feed to Twitter
     try {
       console.log('\nPublishing tweet...\n');
-      await BotClient.v2.tweet(feedLong1);
+      await BotClient.v2.tweet(feedShort);
       console.log('Tweet sent successfully!\n');
     } catch (error) {
       console.error('Error sending tweet:', error);

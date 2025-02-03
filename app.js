@@ -1,6 +1,6 @@
 import { postMarketData } from './bot.js';
 import express from 'express';
-import {scheduleJob } from'node-schedule';
+import { scheduleJob } from 'node-schedule';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -58,6 +58,6 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
+app.listen(4000, () => {
     console.log(`Server running on port ${PORT}`);
 });
