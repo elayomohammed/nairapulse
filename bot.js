@@ -49,20 +49,20 @@ export async function postMarketData() {
     // Create feed content short 1
     const feedShort =
       `${currentTime} UTC+1:\n
-    Forex:
-    USD ${usdNgn.PRICE.toString().replace('NGN ', '₦')}
-    EUR ${eurNgn.PRICE.toString().replace('NGN ', '₦')}
-    GBP ${gbpNgn.PRICE.toString().replace('NGN ', '₦')}
+Forex:
+USD ${usdNgn.PRICE.toString().replace('NGN ', '₦')}
+EUR ${eurNgn.PRICE.toString().replace('NGN ', '₦')}
+GBP ${gbpNgn.PRICE.toString().replace('NGN ', '₦')}
 
-    Bitcoin:
-    NGN ${btcNgn.PRICE.toString().replace('NGN ', '₦')}
-    USD ${btcUsd.PRICE.toString().replace('$ ', '$')}
-    EUR ${btcEur.PRICE.toString().replace('€ ', '€')}
-    GBP ${btcGbp.PRICE.toString().replace('£ ', '£')}
+Bitcoin:
+NGN ${btcNgn.PRICE.toString().replace('NGN ', '₦')}
+USD ${btcUsd.PRICE.toString().replace('$ ', '$')}
+EUR ${btcEur.PRICE.toString().replace('€ ', '€')}
+GBP ${btcGbp.PRICE.toString().replace('£ ', '£')}
 
-    www.naira-pulse.com
-    © Powered by Modalcraft Ltd
-    #Forex #Crypto #NGN #BTC #EUR #USD #GBP`;
+https://naira-pulse.com
+©Modalcraft Ltd
+#Forex #Crypto #NGN #BTC #USD #EUR #GBP`;
 
     // Create feed content long
     const feedLong = `${currentTime} UTC+1\n
